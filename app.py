@@ -258,4 +258,4 @@ if choose == 'Important Insights':
     # Display each insight in its respective tab
     for tab, (title, image_path) in zip(tabs, insights.items()):
         with tab:
-            st.image(image_path, caption=title, use_column_width=True)
+            st.image(image_path, caption=title, use_container_width=True)
