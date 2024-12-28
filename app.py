@@ -26,27 +26,27 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import LabelEncoder
 
 #load data frame 
-df=pd.read_csv("Crime Prediction in Chicago_Dataset.csv")
+df=pd.read_csv("Data\\Crime Prediction in Chicago_Dataset.csv")
 
 # load classifiers 
-RandomForest = joblib.load('best_rf_classifier.pkl')
-KNN = joblib.load('best_knn_classifier.pkl')
-Logistic = joblib.load('best_lr_classifier.pkl')
-#XGB = joblib.load('best_xgb_classifier.pkl')
-SVM = joblib.load('svm_classifier.pkl')
-DecisionTree = joblib.load('best_dt_classifier.pkl')
+RandomForest = joblib.load("Models\\best_rf_classifier.pkl")
+KNN = joblib.load('Models\\best_knn_classifier.pkl')
+Logistic = joblib.load('Models\\best_lr_classifier.pkl')
+XGB = joblib.load('Models\\best_xgb_classifier.pkl')
+SVM = joblib.load('Models\\svm_classifier.pkl')
+DecisionTree = joblib.load('Models\\best_dt_classifier.pkl')
 
 models ={
     "SVM":SVM,
     "KNN":KNN,
     "Logistic":Logistic,
     "Random Forest":RandomForest,
-    #"XGBoost":XGB,
+    "XGBoost":XGB,
     "Decision Tree":DecisionTree
 }
 
 # Load the scaler
-scaler = joblib.load('scaler.pkl')
+scaler = joblib.load('Models\\scaler.pkl')
 
 def get_unique(column_name):
     return df[column_name].unique().tolist()
@@ -75,12 +75,12 @@ def preprocess(Block, IUCR, Primary_Type, Description, Location_Description,
     """
     
     # Load or create new encoders for each categorical feature
-    block_encoder = create_and_save_encoder(df['Block'], 'Block_encoder.pkl')  # Example: df['Block']
-    iucr_encoder = create_and_save_encoder(df['IUCR'], 'IUCR_encoder.pkl')  # Example: df['IUCR']
-    primary_type_encoder = create_and_save_encoder(df['Primary Type'], 'Primary_Type_encoder.pkl')  # Example: df['Primary Type']
-    description_encoder = create_and_save_encoder(df['Description'], 'Description_encoder.pkl')  # Example: df['Description']
-    location_desc_encoder = create_and_save_encoder(df['Location Description'], 'Location_Description_encoder.pkl')  # Example: df['Location Description']
-    fbi_code_encoder = create_and_save_encoder(df['FBI Code'], 'FBI_Code_encoder.pkl')  # Example: df['FBI Code']
+    block_encoder = create_and_save_encoder(df['Block'], 'Models\\Block_encoder.pkl')  # Example: df['Block']
+    iucr_encoder = create_and_save_encoder(df['IUCR'], 'Models\\IUCR_encoder.pkl')  # Example: df['IUCR']
+    primary_type_encoder = create_and_save_encoder(df['Primary Type'], 'Models\\Primary_Type_encoder.pkl')  # Example: df['Primary Type']
+    description_encoder = create_and_save_encoder(df['Description'], 'Models\\Description_encoder.pkl')  # Example: df['Description']
+    location_desc_encoder = create_and_save_encoder(df['Location Description'], 'Models\\Location_Description_encoder.pkl')  # Example: df['Location Description']
+    fbi_code_encoder = create_and_save_encoder(df['FBI Code'], 'Models\\FBI_Code_encoder.pkl')  # Example: df['FBI Code']
     
     # Encode categorical features
     Block = block_encoder.transform([Block])[0]
@@ -97,7 +97,7 @@ def preprocess(Block, IUCR, Primary_Type, Description, Location_Description,
     ]
     
     # Load the scaler (assuming it's already trained)
-    scaler = joblib.load('scaler.pkl')
+    scaler = joblib.load('Models\\scaler.pkl')
     
     # Scale the features
     features_scaled = scaler.transform([features])
@@ -168,7 +168,7 @@ def load_lottie_file(filepath: str):
 
 if choose == 'Home':
     # Path to your Lottie JSON file
-    lottie_filepath = r"Detective.json"
+    lottie_filepath = r"Assets\Detective.json"
     # Load Lottie animation
     lottie_animation = load_lottie_file(lottie_filepath)
     if lottie_animation:
@@ -195,7 +195,7 @@ if choose == 'Home':
     hour = st.number_input("Hour", min_value=0, max_value=23, step=1)
     day_of_week = st.selectbox("Day of the Week",[None]+["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
     month = st.selectbox("Month",[None]+list(range(1, 13)))
-    model=st.selectbox("Model",[None]+["SVM","KNN","Logistic","Random Forest","Decision Tree"])
+    model=st.selectbox("Model",[None]+["SVM","KNN","Logistic","XGBoost","Random Forest","Decision Tree"])
 
     day_of_week_mapping = {
         "Monday": 0,
@@ -230,10 +230,12 @@ if choose == 'Visualization':
         elif visualization_type == "Donate Chart":
             visualization.DonateChart(df, column)
 
+
+
 if choose == 'Classification Insights':
     st.subheader('Classification Insights')
     st.write('---')
-    model_name=st.selectbox("Model",[None]+["SVM","KNN","Logistic","Random Forest","Decision Tree"])
+    model_name=st.selectbox("Model",[None]+["SVM","KNN","Logistic","XGBoost","Random Forest","Decision Tree"])
     if st.button("Get Insights"):
         obj=Model(models[model_name])
         obj.display_model_information()
@@ -243,12 +245,12 @@ if choose == 'Important Insights':
     st.write('---')
     
     insights = {
-        'Biased Data':"before upsamplin.png",  # Replace with the actual file path or generated chart
-        'After UpSampling':"after upsampling.png",
-        'Heat Map Correlation':"Heat map.png",
-        'Feature Importance':"feature importance.png",
-        'Model Accuracies':"Accuracy of Classification models.png",
-        'ROC':"ROC.png"
+        'Biased Data':"Assets\\before upsamplin.png",  # Replace with the actual file path or generated chart
+        'After UpSampling':"Assets\\after upsampling.png",
+        'Heat Map Correlation':"Assets\\Heat map.png",
+        'Feature Importance':"Assets\\feature importance.png",
+        'Model Accuracies':"Assets\\Accuracy of Classification models.png",
+        'ROC':"Assets\\ROC.png"
     }
 
 

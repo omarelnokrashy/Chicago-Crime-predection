@@ -30,11 +30,11 @@ class Model:
     def __init__(self, model):
         self.model = model
         # Load data frame
-        self.X = pd.read_csv("X.csv")
-        self.y_df = pd.read_csv("y.csv")        
+        self.X = pd.read_csv("Data\\X.csv")
+        self.y_df = pd.read_csv("Data\\y.csv")        
 
         # Load the scaler
-        self.scaler = joblib.load('scaler.pkl')
+        self.scaler = joblib.load('Models\\scaler.pkl')
 
         # Flatten the target variable (if it's not already)
         self.y = self.y_df.to_numpy().ravel()
